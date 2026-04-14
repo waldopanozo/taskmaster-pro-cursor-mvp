@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TaskMaster Pro — MVP API</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="site-header">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div>
+            <h1>TaskMaster Pro</h1>
+            <span>API de tareas · MVP corporativo</span>
+          </div>
+        </div>
+        <div class="nav-pill">Inspirado en kits Figma Community · gestión de tareas</div>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="hero-title">
+          <span class="hero-badge">Clean Architecture + Prisma + SQLite</span>
+          <h2 id="hero-title">Gestión de tareas con una capa visual que cuenta una historia</h2>
+          <p class="hero-lead">
+            Paleta y patrones de UX alineados con dashboards gratuitos de Figma para productividad:
+            foco claro, estados legibles y un acento distintivo (teal) frente al azul genérico de muchos
+            SaaS.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="/health">Comprobar API (GET /health)</a>
+            <a class="btn btn-ghost" href="#paleta">Ver paleta</a>
+          </div>
+        </section>
+
+        <section id="paleta" aria-labelledby="palette-title">
+          <h3 id="palette-title">Paleta (tokens CSS)</h3>
+          <p class="section-lead">
+            Neutros fríos de fondo, superficie blanca y acento teal; naranja y verde para estados de
+            negocio (pendiente / completado), como en listas y tableros de los UI kits de referencia.
+          </p>
+          <div class="palette">
+            <figure class="swatch">
+              <div class="swatch-color" style="background: #f0f4f8"></div>
+              <figcaption><strong>--color-bg</strong>#F0F4F8</figcaption>
+            </figure>
+            <figure class="swatch">
+              <div class="swatch-color" style="background: #ffffff; border-bottom: 1px solid #e1e7ef"></div>
+              <figcaption><strong>--color-surface</strong>#FFFFFF</figcaption>
+            </figure>
+            <figure class="swatch">
+              <div class="swatch-color" style="background: #0d9488"></div>
+              <figcaption><strong>--color-accent</strong>#0D9488</figcaption>
+            </figure>
+            <figure class="swatch">
+              <div class="swatch-color" style="background: #ea580c"></div>
+              <figcaption><strong>--color-pending</strong>#EA580C</figcaption>
+            </figure>
+            <figure class="swatch">
+              <div class="swatch-color" style="background: #059669"></div>
+              <figcaption><strong>--color-done</strong>#059669</figcaption>
+            </figure>
+            <figure class="swatch">
+              <div class="swatch-color" style="background: #12151a"></div>
+              <figcaption><strong>--color-text</strong>#12151A</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section aria-labelledby="ux-title">
+          <h3 id="ux-title">Estados de tarea (UX)</h3>
+          <p class="section-lead">
+            Misma jerarquía que en plantillas de dashboard: título primero, meta después, indicador de
+            estado a la izquierda.
+          </p>
+          <div class="status-demo">
+            <div class="task-row">
+              <span class="dot dot-pending" aria-hidden="true"></span>
+              <div>
+                <p>Informe trimestral</p>
+                <small>PENDING — visible y urgente sin gritar</small>
+              </div>
+            </div>
+            <div class="task-row">
+              <span class="dot dot-done" aria-hidden="true"></span>
+              <div>
+                <p>Reunión de planificación</p>
+                <small>COMPLETED — confirmación positiva</small>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="api-title">
+          <h3 id="api-title">Endpoints útiles</h3>
+          <p class="section-lead">La API REST sigue bajo <code>/api/tasks</code>. Ejemplos desde el mismo origen:</p>
+          <div class="api-grid">
+            <div class="api-card">
+              <h4>Salud</h4>
+              <code>GET /health</code>
+            </div>
+            <div class="api-card">
+              <h4>Listar con filtro</h4>
+              <code>GET /api/tasks?status=PENDING</code>
+            </div>
+            <div class="api-card">
+              <h4>Crear</h4>
+              <code>POST /api/tasks</code> + JSON body
+            </div>
+            <div class="api-card">
+              <h4>Documentación</h4>
+              <code>README.md</code> en la raíz del proyecto
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>
+          Inspiración visual y tabla de colores están documentadas en el
+          <strong>README.md</strong> del proyecto (enlaces a Figma Community: Plan It, Task Dashboard y
+          otros kits gratuitos).
+        </p>
+        <ul>
+          <li>
+            <a
+              href="https://www.figma.com/community/file/1291115639727516852/plan-it-free-task-project-management-dashboard-ui-kit"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Plan It — Task &amp; Project Management UI Kit</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.figma.com/community/file/1260446927126496958/task-dashboard-template-ui-kit"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Task Dashboard — Template UI Kit</a
+            >
+          </li>
+        </ul>
+      </footer>
+    </div>
+  </body>
+</html>

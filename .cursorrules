@@ -1,0 +1,31 @@
+# TaskMaster Pro — reglas del proyecto
+
+## Arquitectura
+- **Clean Architecture**: dominio sin dependencias externas; casos de uso en `application`; adaptadores (Prisma, HTTP) en `infrastructure` y `presentation`.
+- **Inversión de dependencias**: el dominio y la aplicación definen puertos (`TaskRepository`); la infraestructura implementa esos contratos.
+- **Un archivo, una responsabilidad**; evitar “god modules”.
+
+## TypeScript
+- `strict: true`; tipos explícitos en APIs públicas (servicios, controladores, repositorios).
+- No usar `any` salvo justificación breve en comentario.
+- Enums/interfaces de dominio alineados con el modelo persistido; mapear en el repositorio si hace falta.
+
+## API HTTP
+- Express con JSON; rutas bajo `/api/tasks`.
+- Validación con **Zod** en cuerpo y query; errores de validación con detalle estructurado vía middleware global.
+- Códigos HTTP coherentes: 201 en creación, 204 en borrado, 404 cuando no exista el recurso.
+
+## Datos
+- **SQLite** vía **Prisma**; migraciones versionadas en `prisma/migrations`.
+- Variables sensibles solo en `.env` (no commitear); documentar en `.env.example`.
+
+## Errores y logging
+- Errores de negocio con `AppError` (status + código opcional).
+- Middleware global para `AppError`, `ZodError` y fallback 500; loguear errores no controlados en consola.
+
+## Estilo y documentación
+- Comentarios breves solo donde aclaren reglas de negocio o no obviedades.
+- README actualizado con instalación, variables de entorno y ejemplos de uso de la API.
+
+## Pruebas
+- **Jest** para lógica de aplicación y validadores; mocks para repositorios en tests unitarios.
