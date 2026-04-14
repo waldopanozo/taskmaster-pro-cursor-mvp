@@ -4,9 +4,9 @@ MVP de **gestión de tareas** orientado a entornos corporativos, pensado para de
 
 **Stack:** Node.js · Express · TypeScript · Prisma · SQLite · Zod · Jest · HTML/CSS estático.
 
-**Este `README.md` concentra toda la documentación del proyecto** (pasos del taller, CRUD, diseño/UX, arquitectura, reglas y prompts). El archivo **`.cursorrules`** se mantiene en la raíz porque Cursor lo usa de forma automática; su contenido se reproduce aquí en el [anexo](#anexo-reglas-del-proyecto-cursorrules).
+**Repositorio público:** [github.com/waldopanozo/taskmaster-pro-cursor-mvp](https://github.com/waldopanozo/taskmaster-pro-cursor-mvp)
 
-> Los ficheros que antes apuntaban a `design/inspiracion-figma.md` o `docs/PASOS-TALLER.md` ahora remiten a este README para no duplicar contenido.
+**Este `README.md` concentra toda la documentación del proyecto** (pasos del taller, CRUD, diseño/UX, arquitectura, reglas y prompts). El archivo **`.cursorrules`** se mantiene en la raíz porque Cursor lo usa de forma automática; su contenido se reproduce aquí en el [anexo](#anexo-reglas-del-proyecto-cursorrules).
 
 ---
 
@@ -26,7 +26,7 @@ MVP de **gestión de tareas** orientado a entornos corporativos, pensado para de
 | 10 | **Filtrar tareas por estado** | Sí | `GET /api/tasks?status=PENDING` o `COMPLETED` |
 | 11 | **Pruebas con Jest o Pytest** | Sí | **Jest** — `npm test` (`*.test.ts`) |
 | 12 | **README:** cómo ejecutar la app + prompts usados | Sí | Este README (instalación, scripts, [prompts](#prompts-utilizados-con-cursor)) |
-| 13 | **Entrega: código** (ZIP o enlace repo) | Sí | Código en `taskmaster-pro/` |
+| 13 | **Entrega: código** (ZIP o enlace repo) | Sí | [Repositorio en GitHub](https://github.com/waldopanozo/taskmaster-pro-cursor-mvp) |
 | 14 | **Entrega: `.cursorrules`** | Sí | Raíz del proyecto |
 | 15 | **Entrega: README** | Sí | Este archivo |
 | 16 | **Entrega: vídeo ~1 min** (IA resolviendo un bug) | Fuera del repo | Lo grabás y subís según el curso; no es un fichero del proyecto |
@@ -48,7 +48,7 @@ MVP de **gestión de tareas** orientado a entornos corporativos, pensado para de
 6. [Pasos del taller del curso (STEP 1 a 3)](#pasos-del-taller-del-curso-step-1-a-3)
 7. [Inspiración visual y UX — Figma Community](#inspiración-visual-y-ux--figma-community)
 8. [Interfaz implementada (landing)](#interfaz-implementada-landing)
-9. [API REST, CRUD y ejemplos](#api-rest-crud-y-ejemplos)
+9. [API REST, CRUD y ejemplos](#api-rest-crud-y-ejemplos) (incluye **Windows / PowerShell** y `curl.exe`)
 10. [Modelo de datos (Prisma / SQLite)](#modelo-de-datos-prisma--sqlite)
 11. [Arquitectura y patrón Repository](#arquitectura-y-patrón-repository)
 12. [Pruebas](#pruebas)
@@ -261,33 +261,66 @@ Implementación: `src/presentation/http/routes/task.routes.ts` y `src/applicatio
 
 Validación **Zod**; negocio con **`AppError`**; **middleware global** para `AppError`, `ZodError` y 500.
 
-### Ejemplos curl básicos
+### Ejemplos con curl (Linux / macOS / Git Bash)
 
 ```bash
 curl -s http://localhost:3000/health
 
-curl -s -X POST http://localhost:3000/api/tasks -H "Content-Type: application/json" ^
-  -d "{\"title\":\"Revisar informe\",\"description\":\"Antes del viernes\"}"
+curl -s -X POST http://localhost:3000/api/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Revisar informe","description":"Antes del viernes"}'
 
 curl -s "http://localhost:3000/api/tasks?status=PENDING"
 ```
 
-En PowerShell, para JSON: `-d '{"title":"..."}'`.
+### Windows (PowerShell)
+
+En **PowerShell**, `curl` **no** es el curl de Unix: es un alias de `Invoke-WebRequest`, con otra sintaxis. Para los mismos ejemplos usá **`curl.exe`** (el ejecutable que viene con Windows 10/11) o los cmdlets nativos.
+
+**Salud del servicio con `curl.exe`:**
+
+```powershell
+curl.exe -s http://localhost:3000/health
+```
+
+**Equivalente con cmdlet (respuesta como objeto JSON):**
+
+```powershell
+Invoke-RestMethod -Uri "http://localhost:3000/health" -Method Get
+```
+
+**POST con cuerpo JSON (PowerShell):**
+
+```powershell
+Invoke-RestMethod -Uri "http://localhost:3000/api/tasks" -Method Post `
+  -ContentType "application/json" `
+  -Body '{"title":"Revisar informe","description":"Antes del viernes"}'
+```
+
+Si copiás ejemplos “tipo bash” con `curl -s` y fallan o piden parámetros raros (`Uri:`), es porque PowerShell interpretó `curl` como `Invoke-WebRequest`: usá **`curl.exe`** explícito o `Invoke-RestMethod` / `Invoke-WebRequest -Uri ... -UseBasicParsing`.
 
 ### Probar todo el CRUD (sustituir `TU-UUID` por el id devuelto al crear)
 
+**Bash / Git Bash:**
+
 ```bash
-curl -s -X POST http://localhost:3000/api/tasks -H "Content-Type: application/json" -d "{\"title\":\"Demo\",\"description\":\"Prueba CRUD\"}"
-
+curl -s -X POST http://localhost:3000/api/tasks -H "Content-Type: application/json" -d '{"title":"Demo","description":"Prueba CRUD"}'
 curl -s http://localhost:3000/api/tasks
-
 curl -s "http://localhost:3000/api/tasks?status=PENDING"
-
 curl -s http://localhost:3000/api/tasks/TU-UUID
-
-curl -s -X PUT http://localhost:3000/api/tasks/TU-UUID -H "Content-Type: application/json" -d "{\"status\":\"COMPLETED\"}"
-
+curl -s -X PUT http://localhost:3000/api/tasks/TU-UUID -H "Content-Type: application/json" -d '{"status":"COMPLETED"}'
 curl -s -X DELETE http://localhost:3000/api/tasks/TU-UUID -w "\nHTTP %{http_code}\n"
+```
+
+**PowerShell (misma idea con `curl.exe`; una línea por comando):**
+
+```powershell
+curl.exe -s -X POST http://localhost:3000/api/tasks -H "Content-Type: application/json" -d "{\"title\":\"Demo\",\"description\":\"Prueba CRUD\"}"
+curl.exe -s http://localhost:3000/api/tasks
+curl.exe -s "http://localhost:3000/api/tasks?status=PENDING"
+curl.exe -s http://localhost:3000/api/tasks/TU-UUID
+curl.exe -s -X PUT http://localhost:3000/api/tasks/TU-UUID -H "Content-Type: application/json" -d "{\"status\":\"COMPLETED\"}"
+curl.exe -s -X DELETE http://localhost:3000/api/tasks/TU-UUID -w "`nHTTP %{http_code}`n"
 ```
 
 ---
@@ -342,8 +375,6 @@ taskmaster-pro/
 ├── public/
 │   ├── index.html
 │   └── styles.css
-├── design/                   # (opcional) redirección; ver nota abajo
-├── docs/                     # (opcional) redirección; ver nota abajo
 └── src/
     ├── domain/
     ├── application/
@@ -353,8 +384,6 @@ taskmaster-pro/
     ├── types/
     └── server.ts
 ```
-
-Si existen ficheros breves en `design/` o `docs/`, solo redirigen a este README para no romper enlaces antiguos.
 
 ---
 
@@ -415,10 +444,10 @@ Contenido del archivo **`.cursorrules`** en la raíz (Cursor lo lee automáticam
 
 Incluí en tu ZIP o repositorio:
 
-- Código fuente
+- Código fuente (este proyecto está en **[GitHub — taskmaster-pro-cursor-mvp](https://github.com/waldopanozo/taskmaster-pro-cursor-mvp)**)
 - **`.cursorrules`**
 - **`README.md`** (este archivo)
-- Vídeo corto (≈1 min) sobre cómo usaste la IA para resolver un bug
+- Vídeo corto (≈1 min) sobre cómo usaste la IA para resolver un bug (subilo según indique el curso: plataforma del aula, YouTube no listado, etc.)
 
 ---
 

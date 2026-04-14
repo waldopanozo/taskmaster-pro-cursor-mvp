@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "description": "MVP de gestión de tareas corporativas (Clean Architecture, Express, Prisma, SQLite)",
   "main": "dist/server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/waldopanozo/taskmaster-pro-cursor-mvp.git"
+  },
+  "homepage": "https://github.com/waldopanozo/taskmaster-pro-cursor-mvp#readme",
+  "bugs": {
+    "url": "https://github.com/waldopanozo/taskmaster-pro-cursor-mvp/issues"
+  },
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
