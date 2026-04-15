@@ -6,6 +6,8 @@ MVP de **gestión de tareas** orientado a entornos corporativos, pensado para de
 
 **Repositorio público:** [github.com/waldopanozo/taskmaster-pro-cursor-mvp](https://github.com/waldopanozo/taskmaster-pro-cursor-mvp)
 
+**Vídeo (YouTube):** demostración del bug al crear tareas desde PowerShell/curl y la solución — [youtu.be/MhX3rpg_8rU](https://youtu.be/MhX3rpg_8rU)
+
 **Este `README.md` concentra toda la documentación del proyecto** (pasos del taller, CRUD, diseño/UX, arquitectura, reglas y prompts). El archivo **`.cursorrules`** se mantiene en la raíz porque Cursor lo usa de forma automática; su contenido se reproduce aquí en el [anexo](#anexo-reglas-del-proyecto-cursorrules).
 
 ---
@@ -29,7 +31,7 @@ MVP de **gestión de tareas** orientado a entornos corporativos, pensado para de
 | 13 | **Entrega: código** (ZIP o enlace repo) | Sí | [Repositorio en GitHub](https://github.com/waldopanozo/taskmaster-pro-cursor-mvp) |
 | 14 | **Entrega: `.cursorrules`** | Sí | Raíz del proyecto |
 | 15 | **Entrega: README** | Sí | Este archivo |
-| 16 | **Entrega: vídeo ~1 min** (IA resolviendo un bug) | Fuera del repo | Lo grabás y subís según el curso; no es un fichero del proyecto |
+| 16 | **Entrega: vídeo ~1 min** (IA resolviendo un bug) | Sí | [YouTube — demostración TaskMaster Pro](https://youtu.be/MhX3rpg_8rU) (no está en el repo; es enlace externo) |
 | — | *Extra (no exigido por el brief mínimo)* | | |
 | E1 | Landing estática con paleta e inspiración **Figma Community** | Sí | `public/`, sección [Inspiración visual](#inspiración-visual-y-ux--figma-community) |
 | E2 | **Patrón Repository** documentado | Sí | Puerto `TaskRepository` + `PrismaTaskRepository`; [Arquitectura](#arquitectura-y-patrón-repository) |
@@ -67,11 +69,12 @@ MVP de **gestión de tareas** orientado a entornos corporativos, pensado para de
 | Código fuente | Backend por capas (`src/`), landing en `public/`, esquema Prisma |
 | `.cursorrules` | Reglas para Cursor (mismo contenido resumido en [anexo](#anexo-reglas-del-proyecto-cursorrules)) |
 | `README.md` | **Documentación única del proyecto** (este archivo) |
+| Vídeo del taller | [YouTube — TaskMaster Pro (bug POST / tasks)](https://youtu.be/MhX3rpg_8rU) |
 | Pruebas | Jest (`npm test`) |
 
 **CRUD:** **Create, Read** (lista + por id), **Update** y **Delete** en `/api/tasks`, más **filtro por estado** (`?status=PENDING` o `COMPLETED`). Detalle en [API REST, CRUD y ejemplos](#api-rest-crud-y-ejemplos).
 
-**Entrega académica habitual del taller:** código + `.cursorrules` + README + vídeo corto (≈1 min) sobre uso de IA al resolver un bug (el vídeo no forma parte del repo).
+**Entrega académica habitual del taller:** código + `.cursorrules` + README + vídeo corto (≈1 min) sobre uso de IA al resolver un bug — [vídeo en YouTube](https://youtu.be/MhX3rpg_8rU).
 
 ---
 
@@ -137,7 +140,7 @@ Texto guía: *FullStack development with Cursor Vibe Coding — TaskMaster Pro /
 | Base **SQLite** | **SQLite** vía Prisma (`DATABASE_URL=file:./dev.db`) |
 | ORM (**Prisma** o SQLAlchemy) | **Prisma** |
 | Pruebas (**Jest** o Pytest) | **Jest** (`npm test`) |
-| Entrega: código, **`.cursorrules`**, **README**, vídeo | Código, `.cursorrules`, este README; vídeo aparte |
+| Entrega: código, **`.cursorrules`**, **README**, vídeo | Código, `.cursorrules`, este README; [vídeo en YouTube](https://youtu.be/MhX3rpg_8rU) |
 
 ### Paso 1 — Setup and Context
 
@@ -289,12 +292,20 @@ curl.exe -s http://localhost:3000/health
 Invoke-RestMethod -Uri "http://localhost:3000/health" -Method Get
 ```
 
-**POST con cuerpo JSON (PowerShell):**
+**POST con cuerpo JSON (PowerShell) — recomendado:**
 
 ```powershell
 Invoke-RestMethod -Uri "http://localhost:3000/api/tasks" -Method Post `
   -ContentType "application/json" `
   -Body '{"title":"Revisar informe","description":"Antes del viernes"}'
+```
+
+**Importante:** en PowerShell, un comando como  
+`curl.exe ... -d "{\"title\":\"Demo\"}"` **suele romper el JSON** (las comillas se interpretan mal y el servidor recibe texto inválido → error 400 `INVALID_JSON` o, en versiones anteriores del manejador, 500). Preferí **`Invoke-RestMethod`** o guardá el JSON en un archivo y usá:
+
+```powershell
+Set-Content -Encoding utf8 body.json '{"title":"Demo","description":"Prueba"}' -NoNewline
+curl.exe -s -X POST http://localhost:3000/api/tasks -H "Content-Type: application/json" --data-binary "@body.json"
 ```
 
 Si copiás ejemplos “tipo bash” con `curl -s` y fallan o piden parámetros raros (`Uri:`), es porque PowerShell interpretó `curl` como `Invoke-WebRequest`: usá **`curl.exe`** explícito o `Invoke-RestMethod` / `Invoke-WebRequest -Uri ... -UseBasicParsing`.
@@ -447,7 +458,7 @@ Incluí en tu ZIP o repositorio:
 - Código fuente (este proyecto está en **[GitHub — taskmaster-pro-cursor-mvp](https://github.com/waldopanozo/taskmaster-pro-cursor-mvp)**)
 - **`.cursorrules`**
 - **`README.md`** (este archivo)
-- Vídeo corto (≈1 min) sobre cómo usaste la IA para resolver un bug (subilo según indique el curso: plataforma del aula, YouTube no listado, etc.)
+- Vídeo del taller (≈1 min): **[YouTube — youtu.be/MhX3rpg_8rU](https://youtu.be/MhX3rpg_8rU)** (creación de tareas, PowerShell/curl y solución del error de JSON)
 
 ---
 

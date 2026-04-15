@@ -33,11 +33,28 @@ export function errorHandler(
     return;
   }
 
+  // express.json() / body-parser: JSON inválido (p. ej. `-d "{\\"title\\"..."` mal escapado en PowerShell)
+  const bodyParseErr = err as { status?: number; type?: string };
+  if (bodyParseErr.status === 400 && bodyParseErr.type === 'entity.parse.failed') {
+    res.status(400).json({
+      error: {
+        message:
+          'El cuerpo no es JSON válido. En PowerShell no uses comillas escapadas dentro de -d: usá un fichero (--data-binary @body.json), Invoke-RestMethod, o curl.exe desde cmd.exe.',
+        code: 'INVALID_JSON',
+      },
+    });
+    return;
+  }
+
   console.error('[error]', err);
+  const isProd = process.env.NODE_ENV === 'production';
+  const devDetail =
+    !isProd && err instanceof Error ? err.message : undefined;
   res.status(500).json({
     error: {
       message: 'Error interno del servidor',
       code: 'INTERNAL_ERROR',
+      ...(devDetail ? { details: devDetail } : {}),
     },
   });
 }
